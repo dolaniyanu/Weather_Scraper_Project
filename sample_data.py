@@ -1,3 +1,10 @@
+### PROJECT
+### sample_data.py
+###  NAME  : DANIEL OLANIYANU
+###  CLASS : ADEV-3005 (261248)
+###  DATE  : 2025-04-20
+###  GOAL  : " Prints the outputs of the Weather Scraper and it's database 'weather' "
+
 from weather_scraper import WeatherScraper
 from db_operations import DBOperations
 
