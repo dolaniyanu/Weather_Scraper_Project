@@ -7,8 +7,10 @@
 
 from weather_scraper import WeatherScraper
 from db_operations import DBOperations
+from plot_operations import PlotOperations
 
 DBOperations.initialize_db()
+
 
 url_template = "https://climate.weather.gc.ca/climate_data/daily_data_e.html?StationID=27174&Year={year}&Month={month}&Day=1&timeframe=2"
 scraper = WeatherScraper(url_template)
@@ -21,6 +23,10 @@ if scraped_data:
     # Display the inserted DB records.
     for row in DBOperations.fetch_data():
         print(row)
+
 else:
     print("No data was scraped.")
 
+plotter = PlotOperations()
+plotter.plot_boxplot()
+plotter.plot_lineplot()
