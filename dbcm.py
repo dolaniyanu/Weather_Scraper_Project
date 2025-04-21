@@ -18,9 +18,9 @@ class DBCM:
         self.cursor = self.connection.cursor() # Make connection an extension of cursor definition.
         return self.cursor # Return cursor
     
-    def __exit__(self, error_check):
+    def __exit__(self, error_type, error_value, error_table):
         if self.connection: # Checks if there is a database connection.
-            if error_check is None:
+            if error_type is None:
                 self.connection.commit() # Saves Inserts if there is no error.
             else:
                 self.connection.rollback() # Undo changes if there is an error.

@@ -169,6 +169,7 @@ class WeatherScraper(HTMLParser):
         hardCap_year = 1960 # The hard-cap year (1960), where scrape data ought to stop on an error.
         softCap_year = 2018 # The soft-cap year (2018), where scrape data ought to stop.
         softCap_month = 5 # The soft-cap month (May), where scrape data ought to stop.
+        result = {} # Initializes an empty dictionary to store all the month to month weather data.
 
         while True:
             print(f"\nScraping data for: {current_year}-{current_month:02d}")
@@ -180,6 +181,8 @@ class WeatherScraper(HTMLParser):
                 date_str = f"{current_year}-{current_month:02d}-{day:02d}"
                 print(f"{date_str}: Max={max_val} Min={min_val} Mean={mean_val}")
 
+            month_value = f"{current_year}-{current_month:02d}" # Format the current year and month as a string.
+            result[month_value] = daily_values # Stores the list of daily values of a specific month in the dictionary using the formatted month value.
 
             if current_year == softCap_year and current_month == softCap_month:
                 print("\nReached URL stop date: May 2018. Stopping scraping.")
@@ -197,6 +200,7 @@ class WeatherScraper(HTMLParser):
                 print("Stopping due to redundancy.")
                 break
 
+        return result # Returns a potentially filled dictionary.
 if __name__ == "__main__":
     """
     Initializes the scraper with a given URL, starts the scraping process.
