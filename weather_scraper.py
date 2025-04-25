@@ -8,6 +8,7 @@ import urllib.request
 from urllib.error import URLError, HTTPError
 from html.parser import HTMLParser
 import datetime
+import logging
 
 """
 The WeatherScraper class is made to scrape daily weather data, extracting temperature data 
@@ -218,3 +219,9 @@ if __name__ == "__main__":
 
     # Scraping begins.
     scraper.scrape()
+
+logging.basicConfig(
+    filename='weather_app.log',
+    level=logging.ERROR,
+    format='%(asctime)s - %(levelname)s - %(message)s'
+)
