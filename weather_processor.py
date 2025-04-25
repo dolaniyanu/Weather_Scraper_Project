@@ -5,7 +5,7 @@
 ###  DATE  : 2025-04-20
 
 import logging
-from weather_scraper import WeatherScraper
+from scrape_weather import WeatherScraper
 from db_operations import DBOperations
 from plot_operations import PlotOperations
 

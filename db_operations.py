@@ -6,7 +6,7 @@
 
 from dbcm import DBCM
 import logging
-from weather_scraper import WeatherScraper
+from scrape_weather import WeatherScraper
 
 DB_NAME = "weather.sqlite"
 
