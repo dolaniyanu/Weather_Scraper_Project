@@ -1,10 +1,19 @@
 ### PROJECT
 ### weather_processor.py
-###  NAME  : DANIEL OLANIYANU
-###  CLASS : ADEV-3005 (261248)
-###  DATE  : 2025-04-20
+### NAME  : DANIEL OLANIYANU
+### CLASS : ADEV-3005 (261248)
+### DATE  : 2025-04-20
+
+"""
+weather_processor.py
+
+Provides the WeatherProcessor class which allows users to
+download Winnipeg weather data, save it to a database, and generate 
+visualizations like box plots and line plots.
+"""
 
 import logging
+import datetime
 from scrape_weather import WeatherScraper
 from db_operations import DBOperations
 from plot_operations import PlotOperations
@@ -27,7 +36,7 @@ class WeatherProcessor:
             )
             self.plotter = PlotOperations(self.db_name)
         except Exception as e:
-            logging.error(f'Error in __init__: {e}')
+            logging.error('Error in __init__: %s', e)
             raise
 
     def display_menu(self):
@@ -56,7 +65,7 @@ class WeatherProcessor:
                 else:
                     print("Invalid input. Please try again.")
         except Exception as e:
-            logging.error(f'Error in display_menu: {e}')
+            logging.error('Error in display_menu: %s', e)
             raise
 
     def download_all_data(self):
@@ -73,33 +82,81 @@ class WeatherProcessor:
             else:
                 print("No data was downloaded.")
         except Exception as e:
-            logging.error(f'Error in download_all_data: {e}')
+            logging.error('Error in download_all_data: %s', e)
             raise
 
     def generate_boxplot(self):
         """
-        Generates a boxplot of monthly temperature distribution.
+        Generates a boxplot based on a user-defined year range.
         """
         try:
-            self.plotter.plot_boxplot()
+            earliest_year = 1996
+            current_year = datetime.datetime.now().year
+            print(f"\nAvailable data range: {earliest_year} to {current_year}")
+
+            first_year = int(input("Enter the start year (e.g., 2018): "))
+            if first_year > current_year:
+                print(f"Starting year cannot be greater than {current_year}. Please try again.")
+                return
+            if first_year < earliest_year:
+                print(f"Starting year cannot be less than {earliest_year}. Please try again.")
+                return
+
+            last_year = int(input("Enter the end year (e.g., 2023): "))
+            if last_year > current_year:
+                print(f"Ending year cannot be greater than {current_year}. Please try again.")
+                return
+            if last_year < earliest_year:
+                print(f"Ending year cannot be less than {earliest_year}. Please try again.")
+                return
+
+            if first_year > last_year:
+                print(f"Starting year cannot be farther than the last user input {last_year}. Please try again.")
+                return
+            if last_year < first_year:
+                print(f"Ending year cannot be earlier than the first user input {first_year}. Please try again.")
+                return
+
+            self.plotter.plot_boxplot(first_year, last_year)
+
+        except ValueError:
+            print("Invalid year input. Please enter numeric values.")
         except Exception as e:
-            logging.error(f'Error in generate_boxplot: {e}')
+            logging.error('Error in generate_boxplot: %s', e)
             raise
 
     def generate_lineplot(self):
         """
-        Generates a line plot portraying the daily mean temperatures for the current month.
+        Generates a line plot for a user-specified year and month.
         """
         try:
-            self.plotter.plot_lineplot()
+            earliest_year = 1996
+            current_year = datetime.datetime.now().year
+            print(f"\nAvailable data range: {earliest_year} to {current_year}")
+
+            year = int(input("Enter the year (e.g., 2023): "))
+            if year > current_year:
+                print(f"Year input cannot be greater than {current_year}. Please try again.")
+                return
+            if year < earliest_year:
+                print(f"Year input cannot be less than {earliest_year}. Please try again.")
+                return
+
+            month = int(input("Enter the month (1-12): "))
+            if 1 <= month <= 12:
+                self.plotter.plot_lineplot(year, month)
+            else:
+                print("Invalid month. Please enter a number between 1 and 12.")
+        except ValueError:
+            print("Invalid input. Please enter numeric values.")
         except Exception as e:
-            logging.error(f'Error in generate_lineplot: {e}')
+            logging.error('Error in generate_lineplot: %s', e)
             raise
+
 
 if __name__ == "__main__":
     processor = WeatherProcessor()
     processor.display_menu()
-
 
 # Logging
 logging.basicConfig(
